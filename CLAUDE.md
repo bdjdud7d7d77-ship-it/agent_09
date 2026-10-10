@@ -15,8 +15,10 @@
 research/<topic>/   Research notes (.md, English), e.g. research/ai-development/
 reports/<topic>/    Final deliverables (.docx etc.), e.g. reports/ai-development/
 scripts/            Scripts that generate reports (python-docx), named make_<topic>_report.py
+                    and decks (python-pptx), named make_<topic>_ppt.py
 trans/              Korean translations, mirroring the original paths
 .claude/            Claude Code settings
+.claude/skills/     Project-only skills, e.g. mk-ppt (build .pptx decks)
 ```
 
 - Group work by topic: use one kebab-case `<topic>` folder name across `research/`, `reports/` and `trans/research/`.

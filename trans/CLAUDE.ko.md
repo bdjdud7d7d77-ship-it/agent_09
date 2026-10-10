@@ -15,8 +15,10 @@
 research/<topic>/   자료조사 노트 (.md, 영문), 예: research/ai-development/
 reports/<topic>/    최종 결과물 (.docx 등), 예: reports/ai-development/
 scripts/            보고서 생성 스크립트 (python-docx), 이름은 make_<topic>_report.py
+                    및 발표자료 생성 스크립트 (python-pptx), 이름은 make_<topic>_ppt.py
 trans/              한국어 번역본, 원본 경로를 그대로 따름
 .claude/            Claude Code 설정
+.claude/skills/     이 프로젝트 전용 스킬, 예: mk-ppt (.pptx 발표자료 제작)
 ```
 
 - 작업은 주제별로 묶는다. `research/`, `reports/`, `trans/research/`에서 같은 kebab-case `<topic>` 폴더 이름을 쓴다.
