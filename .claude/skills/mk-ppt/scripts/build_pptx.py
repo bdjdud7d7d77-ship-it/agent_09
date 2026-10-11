@@ -52,6 +52,11 @@ THEMES = {
         "text": "222222", "muted": "7F7F7F", "on_primary": "FFFFFF", "subtitle": "FDE9D9", "meta": "F8CBAD",
         "series": ["C55A11", "ED7D31", "F4B183", "7F7F7F", "2E75B6", "5B9279"],
     },
+    "pink": {
+        "primary": "C2185B", "accent": "EC407A", "light": "FCE4EC",
+        "text": "222222", "muted": "7F7F7F", "on_primary": "FFFFFF", "subtitle": "F8BBD0", "meta": "F48FB1",
+        "series": ["C2185B", "EC407A", "F48FB1", "7F7F7F", "8E24AA", "5B9279"],
+    },
 }
 
 CHART_TYPES = {
@@ -76,7 +81,7 @@ class Builder:
     def __init__(self, spec):
         self.spec = spec
         self.theme = THEMES.get(spec.get("theme", "navy"), THEMES["navy"])
-        self.font = spec.get("font", "맑은 고딕")
+        self.font = spec.get("font", "Noto Sans KR")
         self.prs = Presentation()
         self.prs.slide_width, self.prs.slide_height = SLIDE_W, SLIDE_H
         self.blank = self.prs.slide_layouts[6]

@@ -7,6 +7,16 @@ description: Create PowerPoint (.pptx) presentations in this project with python
 
 This skill turns content (a topic, the user's notes, or files in `research/` / `report/`) into a clean 16:9 deck. The heavy lifting is done by a bundled script so every deck has the same look and the same Korean-font handling; your job is to plan the story, write a JSON spec, run the script, and check the result.
 
+## Step 0 — read the PPT rules first
+
+Before anything else in this skill, read and follow `.claude/rules/ppt-rule-v1/ppt-rule-v1.md`. It overrides this skill wherever they differ. Order of priority for decks:
+
+1. `.claude/rules/ppt-rule-v1/ppt-rule-v1.md` (and `CLAUDE.md`)
+2. The design `.md` the user provides (e.g. `references/ppt/slide-design-system.md`)
+3. This skill's defaults (themes, font, layouts)
+
+In short: 8 slides by default, follow the user's design file (ask for one if none was given), and never let text overflow or overlap — render and fix before reporting.
+
 ## Project rules that apply here
 
 This project has its own rules in `CLAUDE.md`. They take priority, and the important ones for decks are:
@@ -19,8 +29,8 @@ This project has its own rules in `CLAUDE.md`. They take priority, and the impor
 
 ## Workflow
 
-1. **Gather the content.** Read the source material the user points to. If they only give a topic, ask whether to research it first or use only what they provided — slides with invented numbers are worse than no slides.
-2. **Plan the story.** One message per slide. A typical 8–12 slide deck: title → (agenda or section) → 4–8 content slides → summary/next steps → closing. Pick the slide type that fits each message (see table below): numbers over time → `chart`; 2–4 headline numbers → `stats`; comparisons → `two_column` or `table`; everything else → `bullets`.
+1. **Gather the content and the design file.** Read the source material the user points to. If they only give a topic, ask whether to research it first or use only what they provided — slides with invented numbers are worse than no slides. Read the user's design `.md`; if none was given, ask for one and use this skill's default theme only if the user says so (ppt-rule-v1 §2).
+2. **Plan the story.** One message per slide. **8 slides by default** unless the user asks for another count (ppt-rule-v1 §1): title → (agenda or section) → content slides → summary/next steps → closing. Pick the slide type that fits each message (see table below): numbers over time → `chart`; 2–4 headline numbers → `stats`; comparisons → `two_column` or `table`; everything else → `bullets`.
 3. **Report the outline as the todo list** and wait for approval (project rule).
 4. **Write the spec** (JSON, UTF-8) to the scratchpad.
 5. **Run the script** from the project root:
@@ -28,7 +38,7 @@ This project has its own rules in `CLAUDE.md`. They take priority, and the impor
    python .claude/skills/mk-ppt/scripts/build_pptx.py <scratchpad>/spec.json
    ```
    It saves to `slides/<filename>` (or `--output <path>`), re-opens the file to verify it, and prints one line per slide.
-6. **Check visually when possible.** PowerPoint is installed on this machine, so slides can be exported to PNG and viewed with the Read tool:
+6. **Check visually — required (ppt-rule-v1 §3).** PowerPoint is installed on this machine, so export every slide to PNG and view it with the Read tool:
    ```powershell
    New-Item -ItemType Directory -Force "<scratchpad>\png" | Out-Null
    $app = New-Object -ComObject PowerPoint.Application
@@ -36,7 +46,7 @@ This project has its own rules in `CLAUDE.md`. They take priority, and the impor
    foreach ($sl in $pres.Slides) { $sl.Export("<scratchpad>\png\s$($sl.SlideIndex).png", "PNG", 1920, 1080) }
    $pres.Close(); $app.Quit()
    ```
-   Look for text overflowing its box, words broken across lines, crowded slides and unreadable labels; fix the spec (shorten text, split the slide) and rebuild. Ignore very faint thin streaks running from text down through light boxes — that is a PowerPoint PNG-export artifact, not part of the file.
+   Look for text overflowing its box, text/shape overlap, words broken across lines, crowded slides and unreadable labels; fix the spec (shorten text, split the slide) and rebuild until none remain. Ignore very faint thin streaks running from text down through light boxes — that is a PowerPoint PNG-export artifact, not part of the file.
 7. **Report** the saved path, the slide list, and anything the user asked for that python-pptx could not do.
 
 ## Spec format
@@ -47,12 +57,12 @@ This project has its own rules in `CLAUDE.md`. They take priority, and the impor
   "author": "춘식",
   "filename": "AI_발전_발표.pptx",
   "theme": "navy",
-  "font": "맑은 고딕",
+  "font": "Noto Sans KR",
   "slides": [ { "type": "...", "notes": "optional speaker notes", ... } ]
 }
 ```
 
-`theme`: `navy` (default), `charcoal`, `green`, `orange`. `font` defaults to 맑은 고딕 and is applied to Latin, East Asian and complex-script text (python-pptx alone only sets the Latin font, which breaks Korean rendering).
+`theme`: `navy` (default), `charcoal`, `green`, `orange`, `pink`. `font` defaults to Noto Sans KR and is applied to Latin, East Asian and complex-script text (python-pptx alone only sets the Latin font, which breaks Korean rendering).
 
 | type | fields | use for |
 |---|---|---|

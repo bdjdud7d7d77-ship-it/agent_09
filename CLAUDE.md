@@ -16,11 +16,17 @@ agent_09/
 ├── CLAUDE.md      # Project rules (this file)
 ├── .gitignore     # Ignores Office lock files (~$*) and OS junk
 ├── .claude/
+│   ├── rules/
+│   │   └── ppt-rule-v1/   # Always-loaded rules for building .pptx decks
+│   │       └── ppt-rule-v1.md
 │   └── skills/
 │       └── mk-ppt/    # Project-only skill: builds .pptx decks with python-pptx
 │           ├── SKILL.md
 │           ├── references/python_pptx_api.md
 │           └── scripts/build_pptx.py
+├── references/    # Design references (.md, English) for deliverables
+│   └── ppt/
+│       └── slide-design-system.md   # Orange slide design system (colors, fonts, layout)
 ├── research/      # Research findings as .md (English)
 ├── report/        # Final reports as .docx (Korean)
 ├── slides/        # Presentations as .pptx (Korean), built with the mk-ppt skill
@@ -30,6 +36,7 @@ agent_09/
 - Save research results (`.md`) in `research/`.
 - Save reports (`.docx`) in `report/`. Do not leave deliverables in the project root.
 - Save presentations (`.pptx`) in `slides/`, using the `mk-ppt` skill (`.claude/skills/mk-ppt/`).
+- For any `.pptx` work, apply `.claude/rules/ppt-rule-v1/ppt-rule-v1.md` first. Priority: ppt-rule-v1 → the user's design `.md` → `mk-ppt` defaults.
 - Never overwrite an existing deliverable unless the user asks. Create a new version with a `_v2`, `_v3`, … suffix instead (e.g. `ai_development_research_v2.md`, `AI_발전_보고서_v2.docx`).
 
 ## Workflow

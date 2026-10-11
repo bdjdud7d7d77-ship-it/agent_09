@@ -16,11 +16,17 @@ agent_09/
 ├── CLAUDE.md      # 프로젝트 규칙 (이 파일)
 ├── .gitignore     # Office 잠금 파일(~$*)과 OS 임시 파일 제외
 ├── .claude/
+│   ├── rules/
+│   │   └── ppt-rule-v1/   # .pptx 제작 시 항상 로드되는 규칙
+│   │       └── ppt-rule-v1.md
 │   └── skills/
 │       └── mk-ppt/    # 이 프로젝트 전용 스킬: python-pptx로 .pptx 발표 자료 생성
 │           ├── SKILL.md
 │           ├── references/python_pptx_api.md
 │           └── scripts/build_pptx.py
+├── references/    # 산출물 제작용 디자인 참고 자료 .md (영어)
+│   └── ppt/
+│       └── slide-design-system.md   # 오렌지 슬라이드 디자인 시스템 (색상, 폰트, 레이아웃)
 ├── research/      # 자료조사 결과 .md (영어)
 ├── report/        # 최종 보고서 .docx (한글)
 ├── slides/        # 발표 자료 .pptx (한글), mk-ppt 스킬로 생성
@@ -30,6 +36,7 @@ agent_09/
 - 자료조사 결과(`.md`)는 `research/`에 저장합니다.
 - 보고서(`.docx`)는 `report/`에 저장합니다. 산출물을 프로젝트 루트에 두지 않습니다.
 - 발표 자료(`.pptx`)는 `mk-ppt` 스킬(`.claude/skills/mk-ppt/`)을 사용해 `slides/`에 저장합니다.
+- `.pptx` 작업에는 `.claude/rules/ppt-rule-v1/ppt-rule-v1.md`를 가장 먼저 적용합니다. 우선순위: ppt-rule-v1 → 사용자의 디자인 `.md` → `mk-ppt` 기본값.
 - 사용자가 요청하지 않는 한 기존 산출물을 덮어쓰지 않습니다. 대신 `_v2`, `_v3`, … 처럼 접미사를 붙인 새 버전을 만듭니다(예: `ai_development_research_v2.md`, `AI_발전_보고서_v2.docx`).
 
 ## 작업 방식
