@@ -141,5 +141,5 @@ p.text, p.alignment = "감사합니다", PP_ALIGN.CENTER
 set_font(p.runs[0], 28, True, WHITE)
 accent(prs, s, 5)
 
-out = save(prs, os.path.join(ROOT, "reports", "anthropic-company"), "anthropic_company_slides")
+out = save(prs, os.path.join(ROOT, "slides"), "anthropic_company_slides")
 print(out)

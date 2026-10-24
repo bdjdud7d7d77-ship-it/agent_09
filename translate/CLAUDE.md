@@ -14,26 +14,35 @@
 ```
 agent_09/
 ├── CLAUDE.md      # 프로젝트 규칙 (이 파일)
-├── .gitignore     # Office 잠금 파일(~$*)과 OS 임시 파일 제외
+├── .gitignore     # Office 잠금 파일(~$*), OS 임시 파일, Python 캐시, .playwright-mcp/ 제외
 ├── .claude/
+│   ├── settings.json
 │   ├── rules/
 │   │   └── ppt-rule-v1/   # .pptx 제작 시 항상 로드되는 규칙
 │   │       └── ppt-rule-v1.md
 │   └── skills/
 │       └── mk-ppt/    # 이 프로젝트 전용 스킬: python-pptx로 .pptx 발표 자료 생성
 │           ├── SKILL.md
-│           ├── references/python_pptx_api.md
-│           └── scripts/build_pptx.py
+│           ├── references/
+│           │   ├── python_pptx_api.md   # SKILL.md가 참조하는 API 문서
+│           │   └── python-pptx-api.md   # 이전 API 문서 (scripts/용으로 유지)
+│           └── scripts/
+│               ├── build_pptx.py        # 사양(spec) 기반 발표 자료 생성기 (주 진입점)
+│               ├── pptx_helpers.py      # scripts/make_*_ppt.py가 가져다 쓰는 헬퍼
+│               └── inspect_pptx.py      # .pptx 내용 출력
 ├── references/    # 산출물 제작용 디자인 참고 자료 .md (영어)
 │   └── ppt/
 │       └── slide-design-system.md   # 오렌지 슬라이드 디자인 시스템 (색상, 폰트, 레이아웃)
-├── research/      # 자료조사 결과 .md (영어)
+├── research/      # 자료조사 결과 .md (영어); 파일이 여러 개인 주제는 하위 폴더 사용
+│   └── ai-development/   # 예: 00_research_summary.md … 05_ai_outlook.md
 ├── report/        # 최종 보고서 .docx (한글)
 ├── slides/        # 발표 자료 .pptx (한글), mk-ppt 스킬로 생성
+├── scripts/       # 산출물을 다시 만드는 생성 스크립트 (make_<topic>_report.py, make_<topic>_ppt.py)
 └── translate/     # 모든 .md의 한글 번역본 (같은 상대 경로)
 ```
 
-- 자료조사 결과(`.md`)는 `research/`에 저장합니다.
+- 자료조사 결과(`.md`)는 `research/`에 저장합니다. 파일이 여러 개인 주제는 kebab-case 하위 폴더(예: `research/ai-development/`)에 둡니다.
+- 산출물을 다시 만드는 스크립트는 `scripts/`에 두며, 결과는 `report/` 또는 `slides/`에 저장됩니다.
 - 보고서(`.docx`)는 `report/`에 저장합니다. 산출물을 프로젝트 루트에 두지 않습니다.
 - 발표 자료(`.pptx`)는 `mk-ppt` 스킬(`.claude/skills/mk-ppt/`)을 사용해 `slides/`에 저장합니다.
 - `.pptx` 작업에는 `.claude/rules/ppt-rule-v1/ppt-rule-v1.md`를 가장 먼저 적용합니다. 우선순위: ppt-rule-v1 → 사용자의 디자인 `.md` → `mk-ppt` 기본값.

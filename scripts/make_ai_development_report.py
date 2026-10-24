@@ -1,4 +1,4 @@
-"""Generate reports/ai-development/ai_development_report.docx from the research notes."""
+"""Generate report/ai_development_report.docx from the research notes."""
 import os
 from docx import Document
 from docx.shared import Pt, RGBColor, Cm
@@ -7,7 +7,7 @@ from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
-OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "reports", "ai-development")
+OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "report")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 # No overwrite: pick a new filename if one already exists

@@ -14,26 +14,35 @@ This is a research-and-report workspace, not a code project.
 ```
 agent_09/
 ├── CLAUDE.md      # Project rules (this file)
-├── .gitignore     # Ignores Office lock files (~$*) and OS junk
+├── .gitignore     # Ignores Office lock files (~$*), OS junk, Python caches, .playwright-mcp/
 ├── .claude/
+│   ├── settings.json
 │   ├── rules/
 │   │   └── ppt-rule-v1/   # Always-loaded rules for building .pptx decks
 │   │       └── ppt-rule-v1.md
 │   └── skills/
 │       └── mk-ppt/    # Project-only skill: builds .pptx decks with python-pptx
 │           ├── SKILL.md
-│           ├── references/python_pptx_api.md
-│           └── scripts/build_pptx.py
+│           ├── references/
+│           │   ├── python_pptx_api.md   # API reference used by SKILL.md
+│           │   └── python-pptx-api.md   # Older API reference (kept for scripts/)
+│           └── scripts/
+│               ├── build_pptx.py        # Spec-driven deck builder (main entry)
+│               ├── pptx_helpers.py      # Helpers imported by scripts/make_*_ppt.py
+│               └── inspect_pptx.py      # Dumps the contents of a .pptx
 ├── references/    # Design references (.md, English) for deliverables
 │   └── ppt/
 │       └── slide-design-system.md   # Orange slide design system (colors, fonts, layout)
-├── research/      # Research findings as .md (English)
+├── research/      # Research findings as .md (English); multi-file topics get a subfolder
+│   └── ai-development/   # e.g. 00_research_summary.md … 05_ai_outlook.md
 ├── report/        # Final reports as .docx (Korean)
 ├── slides/        # Presentations as .pptx (Korean), built with the mk-ppt skill
+├── scripts/       # Generator scripts that rebuild deliverables (make_<topic>_report.py, make_<topic>_ppt.py)
 └── translate/     # Korean translations of every .md, mirroring relative paths
 ```
 
-- Save research results (`.md`) in `research/`.
+- Save research results (`.md`) in `research/`. Put a multi-file topic in its own kebab-case subfolder (e.g. `research/ai-development/`).
+- Keep scripts that regenerate a deliverable in `scripts/`; they write to `report/` or `slides/`.
 - Save reports (`.docx`) in `report/`. Do not leave deliverables in the project root.
 - Save presentations (`.pptx`) in `slides/`, using the `mk-ppt` skill (`.claude/skills/mk-ppt/`).
 - For any `.pptx` work, apply `.claude/rules/ppt-rule-v1/ppt-rule-v1.md` first. Priority: ppt-rule-v1 → the user's design `.md` → `mk-ppt` defaults.
